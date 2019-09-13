@@ -315,7 +315,7 @@ public class DatastoreSinkConfig extends GCPReferenceSinkConfig {
       return;
     }
     if (Strings.isNullOrEmpty(kind)) {
-      collector.addFailure("Kind cannot be null or empty.", "Specify kind.")
+      collector.addFailure("Kind must be specified.", null)
         .withConfigProperty(DatastoreSinkConstants.PROPERTY_KIND);
     }
   }
@@ -336,7 +336,7 @@ public class DatastoreSinkConfig extends GCPReferenceSinkConfig {
     Schema.Field field = schema.getField(keyAlias);
     if (field == null) {
       collector.addFailure(String.format("Key field '%s' does not exist in the schema", keyAlias),
-                           "Key alias must exist in the input schema.")
+                           "Change the Key field to be one of the schema fields.")
         .withConfigProperty(DatastoreSinkConstants.PROPERTY_KEY_ALIAS);
       return;
     }
@@ -372,7 +372,7 @@ public class DatastoreSinkConfig extends GCPReferenceSinkConfig {
 
     for (String missingProperty : missedProperties) {
       collector.addFailure(String.format("Index Property '%s' does not exist in the input schema.", missingProperty),
-                           "Ensure indexed properties exist in schema.")
+                           "Change Index property to be one of the schema fields.")
         .withConfigElement(DatastoreSinkConstants.PROPERTY_INDEXED_PROPERTIES, missingProperty);
     }
   }

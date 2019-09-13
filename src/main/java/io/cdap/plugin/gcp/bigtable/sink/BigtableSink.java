@@ -126,7 +126,7 @@ public final class BigtableSink extends BatchSink<StructuredRecord, ImmutableByt
       }
     } catch (IOException e) {
       collector.addFailure(
-        String.format("Failed to prepare configuration for job : %s", e.getMessage()), null)
+        String.format("Failed to connect to Bigtable : %s", e.getMessage()), null)
         .withConfigProperty(BigtableSinkConfig.BIGTABLE_OPTIONS)
         .withStacktrace(e.getStackTrace());
     }
@@ -168,8 +168,7 @@ public final class BigtableSink extends BatchSink<StructuredRecord, ImmutableByt
     }
     List<Schema.Field> fields = inputSchema.getFields();
     if (fields == null || fields.isEmpty()) {
-      collector.addFailure("Input schema does not contain any fields.",
-                           "Input schema must contain fields map.");
+      collector.addFailure("Input schema must contain fields.", null);
       throw collector.getOrThrowException();
     }
     for (Schema.Field field : fields) {

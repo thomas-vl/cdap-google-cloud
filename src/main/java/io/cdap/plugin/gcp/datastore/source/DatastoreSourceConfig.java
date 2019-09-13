@@ -267,7 +267,7 @@ public class DatastoreSourceConfig extends GCPReferenceSourceConfig {
     }
 
     if (Strings.isNullOrEmpty(kind)) {
-      collector.addFailure("Kind cannot be null or empty.", "Specify kind.")
+      collector.addFailure("Kind must be specified.", null)
         .withConfigProperty(DatastoreSourceConstants.PROPERTY_KIND);
     }
   }
@@ -374,7 +374,7 @@ public class DatastoreSourceConfig extends GCPReferenceSourceConfig {
 
       for (String missingProperty : missingProperties) {
         collector.addFailure(String.format("Property '%s' does not exist in the schema.", missingProperty),
-                             "Ensure all the filter properties exist in the schema.")
+                             "Change Property to be one of the schema fields.")
           .withConfigElement(DatastoreSourceConstants.PROPERTY_FILTERS,
                              missingProperty + "|" + filters.get(missingProperty));
       }
@@ -401,7 +401,7 @@ public class DatastoreSourceConfig extends GCPReferenceSourceConfig {
       Schema.Field field = schema.getField(key);
       if (field == null) {
         collector.addFailure(String.format("Key field '%s' does not exist in the schema.", key),
-                             "Key alias must exist in the output schema.")
+                             "Change the Key field to be one of the schema fields.")
           .withConfigProperty(DatastoreSourceConstants.PROPERTY_KEY_ALIAS);
         return;
       }

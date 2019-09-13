@@ -87,21 +87,21 @@ public final class BigtableSinkConfig extends GCPReferenceSourceConfig {
   public void validate(FailureCollector collector) {
     super.validate(collector);
     if (!containsMacro(TABLE) && Strings.isNullOrEmpty(table)) {
-      collector.addFailure("Table name is missing.", "Specify table name.").withConfigProperty(TABLE);
+      collector.addFailure("Table name must be specified.", null).withConfigProperty(TABLE);
     }
     if (!containsMacro(NAME_PROJECT) && tryGetProject() == null) {
       collector.addFailure("Could not detect Google Cloud project id from the environment.",
                            "Specify project id.").withConfigProperty(NAME_PROJECT);
     }
     if (!containsMacro(INSTANCE) && Strings.isNullOrEmpty(instance)) {
-      collector.addFailure("Instance ID is missing.", "Specify instance id.").withConfigProperty(INSTANCE);
+      collector.addFailure("Instance ID must be specified.", null).withConfigProperty(INSTANCE);
     }
     String serviceAccountFilePath = getServiceAccountFilePath();
     if (!containsMacro(NAME_SERVICE_ACCOUNT_FILE_PATH) && serviceAccountFilePath != null) {
       File serviceAccountFile = new File(serviceAccountFilePath);
       if (!serviceAccountFile.exists()) {
         collector.addFailure(String.format("Service account file '%s' does not exist.", serviceAccountFilePath),
-                             "Specify existing service account file path.")
+                             "Ensure the service account file is available on the local filesystem.")
           .withConfigProperty(NAME_SERVICE_ACCOUNT_FILE_PATH);
       }
     }

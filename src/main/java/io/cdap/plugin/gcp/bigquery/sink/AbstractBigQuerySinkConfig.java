@@ -108,7 +108,7 @@ public abstract class AbstractBigQuerySinkConfig extends GCPReferenceSinkConfig 
       // Basic validation for allowed characters as per https://cloud.google.com/storage/docs/naming
       Pattern p = Pattern.compile("[a-z0-9._-]+");
       if (!p.matcher(bucket).matches()) {
-        collector.addFailure("Bucket must only contain lowercase characters, numbers,'.', '_', and '-'", null)
+        collector.addFailure("Bucket must only contain lowercase characters, numbers, '.', '_', and '-'", null)
           .withConfigProperty(NAME_BUCKET);
       }
     }

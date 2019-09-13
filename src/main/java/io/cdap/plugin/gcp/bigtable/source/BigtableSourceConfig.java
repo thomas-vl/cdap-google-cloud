@@ -158,27 +158,27 @@ public final class BigtableSourceConfig extends GCPReferenceSourceConfig {
   public void validate(FailureCollector collector) {
     super.validate(collector);
     if (!containsMacro(TABLE) && Strings.isNullOrEmpty(table)) {
-      collector.addFailure("Table name is missing.", "Specify table name.").withConfigProperty(TABLE);
+      collector.addFailure("Table name must be specified.", null).withConfigProperty(TABLE);
     }
     if (!containsMacro(NAME_PROJECT) && tryGetProject() == null) {
       collector.addFailure("Could not detect Google Cloud project id from the environment.",
                            "Specify project id.").withConfigProperty(NAME_PROJECT);
     }
     if (!containsMacro(INSTANCE) && Strings.isNullOrEmpty(instance)) {
-      collector.addFailure("Instance ID is missing.", "Specify instance id.").withConfigProperty(INSTANCE);
+      collector.addFailure("Instance ID must be specified.", null).withConfigProperty(INSTANCE);
     }
     String serviceAccountFilePath = getServiceAccountFilePath();
     if (!containsMacro(NAME_SERVICE_ACCOUNT_FILE_PATH) && serviceAccountFilePath != null) {
       File serviceAccountFile = new File(serviceAccountFilePath);
       if (!serviceAccountFile.exists()) {
         collector.addFailure(String.format("Service account file '%s' does not exist.", serviceAccountFilePath),
-                             "Specify existing service account file path.")
+                             "Ensure the service account file is available on the local filesystem.")
           .withConfigProperty(NAME_SERVICE_ACCOUNT_FILE_PATH);
       }
     }
     if (!containsMacro(ON_ERROR)) {
       if (Strings.isNullOrEmpty(onError)) {
-        collector.addFailure("Error handling is missing.", "Specify error handling.").withConfigProperty(ON_ERROR);
+        collector.addFailure("Error handling must be specified.", null).withConfigProperty(ON_ERROR);
       }
       if (!Strings.isNullOrEmpty(onError) && ErrorHandling.fromDisplayName(onError) == null) {
         collector.addFailure(String.format("Invalid record error handling strategy name '%s'.", onError),
@@ -205,7 +205,7 @@ public final class BigtableSourceConfig extends GCPReferenceSourceConfig {
     if (!containsMacro(SCHEMA)) {
       Schema parsedSchema = getSchema(collector);
       if (parsedSchema == null) {
-        collector.addFailure("Output schema is missing.", "Specify output schema.").withConfigProperty(SCHEMA);
+        collector.addFailure("Output schema must be specified.", null).withConfigProperty(SCHEMA);
         throw collector.getOrThrowException();
       }
       if (Schema.Type.RECORD != parsedSchema.getType()) {
@@ -215,8 +215,7 @@ public final class BigtableSourceConfig extends GCPReferenceSourceConfig {
       }
       List<Schema.Field> fields = parsedSchema.getFields();
       if (null == fields || fields.isEmpty()) {
-        collector.addFailure("Schema does not contain any fields.",
-                             "Schema must contain fields map.").withConfigProperty(SCHEMA);
+        collector.addFailure("Schema must contain fields.", null).withConfigProperty(SCHEMA);
         throw collector.getOrThrowException();
       } else {
         if (!columnMappings.isEmpty()) {
