@@ -4,4 +4,4 @@ steps:
   
 - name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: '/bin/bash'
-  args: ['-c','gsutil cp target/. $PROJECT_ID-cdap']
+  args: ['-c','gsutil cp target/. gs://$PROJECT_ID-cdap']
