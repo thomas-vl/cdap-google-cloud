@@ -1,0 +1,7 @@
+steps:
+- name: 'gcr.io/cloud-builders/mvn'
+  args: ['clean','package']
+  
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: '/bin/bash'
+  args: ['-c','gsutil cp target/. $PROJECT-cdap']
